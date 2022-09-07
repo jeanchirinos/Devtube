@@ -1,0 +1,88 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  --opposite: black;
+
+  &.dark {
+    --bg: rgb(20, 20, 20);
+    --color: white;
+    --opposite: white;
+  }
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+::selection {
+  background: rgba(231, 104, 0, 0.2);
+}
+
+:root {
+  --inline-padding: 1rem;
+
+  @media (min-width: 768px) {
+    --inline-padding: 2.5rem;
+  }
+}
+
+body {
+  font-family: 'Inter', system-ui;
+  background-color: var(--bg);
+  color: var(--color);
+  overflow-x: hidden;
+
+  &.with-transition {
+    transition: background-color 0.3s, color 0.3s;
+  }
+}
+
+button,
+input {
+  font-family: inherit;
+  border: none;
+  background-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+input {
+  outline: 1px solid #d8d8d8;
+  border-radius: 5px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+// CLASSNAMES
+
+.main-btn {
+  background-color: #006be7;
+  box-shadow: 2px 2px 16px rgba(0, 114, 245, 0.5);
+  border-radius: 0.5rem;
+  color: white;
+  padding: 0.7rem 2rem;
+  font-size: 0.9rem;
+}
+
+.avatar {
+  border-radius: 50%;
+}
+
+.opposite {
+  color: var(--opposite);
+}

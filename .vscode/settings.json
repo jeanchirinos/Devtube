@@ -1,0 +1,20 @@
+{
+  "files.exclude": {
+    ".next": true,
+    "node_modules": true,
+    ".eslintrc.json": true,
+    ".gitignore": true,
+    ".prettierrc.json": true,
+    "next-env.d.ts": true,
+    "next.config.js": true,
+    "package.json": true,
+    "yarn.lock": true,
+    "README.md": true,
+    "tsconfig.json": true,
+    "public": false,
+    "pages/_document.tsx": true,
+    "src/interfaces": true,
+    "backup.txt": true,
+    ".env.local": true,
+  },
+}

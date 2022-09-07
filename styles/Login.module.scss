@@ -1,0 +1,53 @@
+.main {
+  height: calc(100vh - 5rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  max-width: 100%;
+  row-gap: 0.2rem;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 0.5rem;
+    color: white;
+    border-radius: 5px;
+    padding-block: 0.8rem;
+    transition: opacity 0.2s ease-in-out;
+
+    &.github {
+      background-color: #24292e;
+    }
+
+    &.google {
+      background-color: #1a73e8;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  form {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+
+    input {
+      height: 2rem;
+    }
+
+    button {
+      margin-top: 0.5rem;
+      color: #006be7;
+      border: 1px solid #006be7;
+    }
+  }
+}

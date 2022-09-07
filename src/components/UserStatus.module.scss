@@ -1,0 +1,10 @@
+.user {
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+
+  a,
+  button {
+    font-size: 0.8rem;
+  }
+}

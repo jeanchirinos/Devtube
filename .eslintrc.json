@@ -1,3 +1,17 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals",
+    "standard",
+    "prettier"
+  ],
+  "rules": {
+    "no-unused-vars": "warn",
+    "prefer-const": "warn",
+    "no-empty": "warn",
+    "no-unreachable": "warn"
+  },
+  "globals": {
+    "React": "readonly",
+    "JSX": "readonly"
+  }
 }
