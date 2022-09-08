@@ -6,18 +6,18 @@ type TContextComponent = {
 }
 
 interface CtxProps {
-  isLoggedIn: boolean
+  isLoggedIn: null | boolean
 }
 
 export const CtxSession = createContext<CtxProps>({} as CtxProps)
 
 export default function SessionContext({ children }: TContextComponent) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null)
 
   useEffect(() => {
     setIsLoggedIn(Boolean(supabase.auth.session()))
 
-    supabase.auth.onAuthStateChange((event, session) => setIsLoggedIn(Boolean(session)))
+    supabase.auth.onAuthStateChange((evt, session) => setIsLoggedIn(Boolean(session)))
   }, [])
 
   return <CtxSession.Provider value={{ isLoggedIn }}>{children}</CtxSession.Provider>

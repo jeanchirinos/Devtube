@@ -1,15 +1,7 @@
 import s from './CourseForm.module.scss'
-// import { useState } from 'react'
 import { supabase } from 'utils/supabaseClient'
-// import { MdAdd } from 'react-icons/md'
 
 export default function CourseForm() {
-  // const [videoInputs, setVideoInputs] = useState([''])
-
-  // function addVideoInput() {
-  //   setVideoInputs([...videoInputs, ''])
-  // }
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
@@ -25,11 +17,9 @@ export default function CourseForm() {
     try {
       const user = supabase.auth.user()
 
-      const result = await supabase
+      await supabase
         .from('courses')
         .insert({ name, title, videos: urlsArrayWithNumber, userId: user?.id })
-
-      console.log(result)
     } catch (err) {
       console.error(err)
     }
@@ -38,18 +28,7 @@ export default function CourseForm() {
   return (
     <form className={s.form} onSubmit={handleSubmit}>
       <input type='text' name='title' required placeholder='Nombre de curso' />
-
       <textarea name='urls' placeholder='url; url; url ...' cols={30} rows={10} required></textarea>
-
-      {/* {videoInputs.map((v, index) => (
-        <div key={index}>
-          <input type='url' name='url' required placeholder={`Url ${index + 1}`} />
-          <button type='button' onClick={addVideoInput}>
-            <MdAdd />
-          </button>
-        </div>
-      ))} */}
-
       <button className='main-btn'>Crear</button>
     </form>
   )

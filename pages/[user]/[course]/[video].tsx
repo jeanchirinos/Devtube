@@ -79,15 +79,6 @@ type TParams = {
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { user: userRoute, course: courseRoute, video: videoRoute } = params as TParams
 
-  // const user = users.find(u => u.nickname === userRoute)
-  // if (!user) return { notFound: true }
-
-  // const course = courses.find(c => c.id === courseRoute)
-  // if (!course) return { notFound: true }
-
-  // const video = course.videos.find(v => v.number === videoRoute)
-  // if (!video) return { notFound: true }
-
   type Video = {
     id: string
     number: string
@@ -113,19 +104,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       .eq('profiles.username', userRoute)
 
     const course = supabaseData.data?.[0] as unknown as Course
-    // console.log(course)
-
-    // const courseStringed = JSON.stringify(course)
-
-    // console.log(course)
-    // console.log(course[0].videos)
 
     videos = course.videos
 
     videosIds = videos.map(v => v.id).join('&id=')
     user = course.profiles
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return { notFound: true }
   }
 
@@ -153,11 +138,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     return { embeddedLink, title, duration, number, link }
   })
 
-  // console.log(playlist)
-
   const currentVideo = playlist.find((v: TCurrentVideo) => String(v.number) === videoRoute)
 
-  console.log(currentVideo)
   // Pass data to the page via props
   return { props: { user, currentVideo, playlist } }
 }

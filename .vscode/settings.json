@@ -11,10 +11,10 @@
     "yarn.lock": true,
     "README.md": true,
     "tsconfig.json": true,
-    "public": false,
+    "public": true,
     "pages/_document.tsx": true,
     "src/interfaces": true,
-    "backup.txt": true,
+    "src/utils": false,
     ".env.local": true,
   },
 }
