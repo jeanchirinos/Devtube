@@ -3,8 +3,6 @@
 ::after {
   box-sizing: border-box;
   margin: 0;
-  // temporal
-  transition: background-color 0.2s ease-in-out;
 }
 
 html {
@@ -57,6 +55,11 @@ body {
 
   &.with-transition {
     transition: background-color 0.3s, color 0.3s;
+  }
+
+  * {
+    // temporal
+    transition: background-color 0.3s;
   }
 }
 
