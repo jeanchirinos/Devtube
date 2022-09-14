@@ -2,7 +2,7 @@
   "files.exclude": {
     ".next": true,
     "node_modules": true,
-    ".eslintrc.json": true,
+    ".eslintrc.json": false,
     ".gitignore": true,
     ".prettierrc.json": true,
     "next-env.d.ts": true,

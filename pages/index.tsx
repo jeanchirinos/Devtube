@@ -26,7 +26,8 @@ const Home: NextPage<Props> = ({ courses }) => {
 
     setSearch(new RegExp(safeSearch, 'i'))
   }
-  const filteredCourses = courses?.filter(course => search.test(course.name))
+
+  const filteredCourses = courses.filter(course => search.test(course.name))
 
   return (
     <>
@@ -43,7 +44,7 @@ const Home: NextPage<Props> = ({ courses }) => {
               const { username } = profiles
 
               return (
-                <Link key={i} href={`/${username}/${name}/1`}>
+                <Link key={i} href={`/${username}/${name}`}>
                   <a>
                     <picture>
                       <Image

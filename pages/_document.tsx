@@ -22,7 +22,7 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <Script src='getTheme.js' strategy='beforeInteractive' />
+          <Script src='/getTheme.js' strategy='beforeInteractive' />
         </body>
       </Html>
     )

@@ -19,13 +19,11 @@ const Login: NextPage = () => {
 
     const form = Object.fromEntries(new FormData(e.currentTarget))
 
-    try {
-      await supabase.auth.signIn({
+    await supabase.auth
+      .signIn({
         email: form.email as string
       })
-    } catch (err) {
-      console.error(err)
-    }
+      .catch(err => console.log(err))
   }
 
   return isLoggedIn === false ? (
