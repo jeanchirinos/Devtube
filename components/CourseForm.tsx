@@ -1,5 +1,5 @@
 import s from './CourseForm.module.scss'
-import { supabase } from 'utils/supabaseClient'
+import { supabase } from '@/src/utils/supabaseClient'
 // import { showToast } from 'functions'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -16,24 +16,47 @@ export default function CourseForm() {
     const form = Object.fromEntries(new FormData(e.currentTarget))
     const title = form.title as string
     const name = title.toLowerCase().replace(/\s/g, '_')
+    const description = form.description === '' ? 'Sin descripción' : form.description
 
     let urls = form.urls as string
     urls = urls.replace(/\s/g, '')
     const urlsArray = urls.split(';')
-    const urlsArrayWithNumber = urlsArray.map((url, index) => ({ id: url, number: index + 1 }))
 
     try {
       const user = supabase.auth.user()
 
+      if (!user) return
+
       const bannersPath =
         'https://mkodcltydsdztnykjkna.supabase.co/storage/v1/object/public/banners'
 
-      const imageName = `${name}-${user?.id}`
+      let imageName = `${name}-${user?.id}`
+      imageName = imageName
+        .replace(/ñ/g, 'n')
+        .replace(/á/g, 'a')
+        .replace(/é/g, 'e')
+        .replace(/í/g, 'i')
+        .replace(/ó/g, 'o')
+        .replace(/ú/g, 'u')
       const banner = `${bannersPath}/${imageName}`
 
-      await supabase
+      const { data, error } = await supabase
         .from('courses')
-        .insert({ name, title, videos: urlsArrayWithNumber, userId: user?.id, banner })
+        .insert({ name, title, userId: user.id, banner, description })
+        .single()
+
+      if (error) {
+        console.error(error)
+        return
+      }
+
+      const urlsArrayWithNumber = urlsArray.map((url, index) => ({
+        identifier: url,
+        order: index + 1,
+        courseId: data.id
+      }))
+
+      await supabase.from('lessons').insert(urlsArrayWithNumber)
 
       await supabase.storage.from('banners').upload(imageName, image.file)
     } catch (err) {
@@ -81,10 +104,11 @@ export default function CourseForm() {
         <textarea
           name='urls'
           placeholder='url; url; url ...'
-          cols={30}
-          rows={10}
+          cols={10}
+          rows={3}
           required
         ></textarea>
+        <textarea name='description' placeholder='Descripción' cols={10} rows={2}></textarea>
         <button className='main-btn'>Crear</button>
       </form>
     </>

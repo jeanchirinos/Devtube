@@ -1,19 +1,20 @@
 import Image from 'next/image'
-import s from '../../styles/Course.module.scss'
+import s from '@/styles/Course.module.scss'
 import { MdCloseFullscreen } from 'react-icons/md'
 import Playlist from './Playlist'
-import { useContext } from 'react'
-import { CtxCourse } from 'context/CourseContext'
+import { useCourse } from '@/src/context/CourseContext'
 
 export default function VideoPlayer() {
-  const { teacher, course, currentVideo, selectVideo } = useContext(CtxCourse)
+  const { teacher, course, currentVideo, selectVideo } = useCourse()
 
   function hidePlaylist() {
     const main = document.querySelector('main')
     main?.classList.toggle(s.withoutPlaylist)
   }
 
-  return currentVideo?.id ? (
+  if (!currentVideo?.id) return <></>
+
+  return (
     <>
       <button className={s.toggle} onClick={hidePlaylist}>
         <MdCloseFullscreen size={18} />
@@ -40,7 +41,7 @@ export default function VideoPlayer() {
                 alt='Avatar de profesor'
                 className='avatar'
               />
-              <span>{teacher.name}</span>
+              <span>{teacher.username}</span>
               <button onClick={() => selectVideo('0')}>{course.title}</button>
             </article>
           </div>
@@ -48,7 +49,5 @@ export default function VideoPlayer() {
         </section>
       </main>
     </>
-  ) : (
-    <></>
   )
 }

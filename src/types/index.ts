@@ -1,4 +1,4 @@
-export type IYoutubeVideo = {
+export type TYoutubeVideo = {
   id: string
   snippet: {
     title: string
@@ -8,16 +8,11 @@ export type IYoutubeVideo = {
   }
 }
 
-export interface Lesson {
+export interface IUserWithCourse {
   id: string
-  identifier: string
-  order: string
-}
-
-export interface TCurrentVideo extends Lesson {
-  embeddedLink: string
-  title: string
-  duration: string
+  courseId: string
+  checkedLessons: string[]
+  state: boolean
 }
 
 export interface TCourse {
@@ -25,15 +20,19 @@ export interface TCourse {
   name: string
   title: string
   banner: string
-  profiles: {
-    name: string
-    avatar: string
-  }
+  description: string
 }
 
-export interface TUserWithCourse {
+export type TTeacher = {
+  username: string
+  avatar: string
+}
+
+export type TLesson = {
   id: string
-  courseId: string
-  checkedLessons: string[]
-  state: boolean
+  identifier: string
+  order: string
+  embeddedLink: string
+  title: string
+  duration: string
 }

@@ -1,8 +1,12 @@
 {
+  "root": true,
   "extends": [
     "next/core-web-vitals",
     "standard",
     "prettier"
+  ],
+  "plugins": [
+    "testing-library"
   ],
   "rules": {
     "no-unused-vars": "warn",
@@ -11,6 +15,18 @@
     "no-unreachable": "warn",
     "spaced-comment": "off"
   },
+  "overrides": [
+    // Only uses Testing Library lint rules in test files
+    {
+      "files": [
+        "**/__tests__/**/*.[jt]s?(x)",
+        "**/?(*.)+(spec|test).[jt]s?(x)"
+      ],
+      "extends": [
+        "plugin:testing-library/react"
+      ]
+    }
+  ],
   "globals": {
     "React": "readonly",
     "JSX": "readonly"

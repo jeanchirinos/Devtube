@@ -1,17 +1,22 @@
 import { BsCheck } from 'react-icons/bs'
 import { useContext } from 'react'
-import { CtxCourse } from 'context/CourseContext'
-import { supabase } from 'utils/supabaseClient'
+import { CtxCourse } from '@/src/context/CourseContext'
+import { supabase } from '@/src/utils/supabaseClient'
+import { showToast } from '@/src/functions'
 
 export default function Playlist() {
-  const { currentVideo, selectVideo, playlist, userWithCourse, setUserWithCourse } =
+  const { currentVideo, selectVideo, lessons, userWithCourse, setUserWithCourse } =
     useContext(CtxCourse)
   const { checkedLessons } = userWithCourse
 
   const isSelected = (number: string) => (currentVideo.order === number ? 'selected' : '')
 
   async function toggleVisibility(id: string) {
-    if (!supabase.auth.user() || !userWithCourse?.state) return
+    // if (!supabase.auth.user() || !userWithCourse?.state) return
+    if (!supabase.auth.user() || !userWithCourse?.state) {
+      showToast('warning', 'Inscríbete al curso para seguir tu progreso')
+      return
+    }
 
     if (checkedLessons.includes(id)) {
       const index = checkedLessons.indexOf(id)
@@ -32,7 +37,7 @@ export default function Playlist() {
 
   return (
     <div className='videos'>
-      {playlist.map(({ order, title, duration, id }) => {
+      {lessons.map(({ order, title, duration, id }) => {
         const className = checkedLessons?.includes(id) ? 'btn-done' : 'btn-undone'
 
         return (

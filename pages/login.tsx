@@ -1,32 +1,48 @@
 import { NextPage } from 'next'
-import s from '../styles/Login.module.scss'
-import { supabase } from '../src/utils/supabaseClient'
+import s from '@/styles/Login.module.scss'
+import { supabase } from '@/src/utils/supabaseClient'
 import { BsGithub, BsGoogle } from 'react-icons/bs'
 import { MdEmail } from 'react-icons/md'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useRouter } from 'next/router'
-import { CtxSession } from 'context/SessionContext'
-import Loader from 'components/Loader'
+import { CtxSession } from '@/src/context/SessionContext'
+import Loader from '@/components/Loader'
+import { showToast } from '@/src/functions'
 
 const Login: NextPage = () => {
-  const router = useRouter()
-  const { isLoggedIn } = useContext(CtxSession)
+  const [loginMode, setLoginMode] = useState(true)
 
-  if (isLoggedIn) router.push('/')
+  const MODE = loginMode
+    ? {
+        text: 'Continuar',
+        sentence: '¿No tienes una cuenta?, Regístrate'
+      }
+    : {
+        text: 'Registrarse',
+        sentence: '¿Ya tienes una cuenta?, Logueate'
+      }
+
+  const router = useRouter()
+  const { currentUser } = useContext(CtxSession)
+
+  if (currentUser) router.push('/')
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
     const form = Object.fromEntries(new FormData(e.currentTarget))
 
-    await supabase.auth
-      .signIn({
-        email: form.email as string
-      })
-      .catch(err => console.log(err))
+    const action = loginMode ? 'signIn' : 'signUp'
+
+    const { error } = await supabase.auth[action]({
+      email: form.email as string,
+      password: form.password as string
+    })
+
+    if (error) showToast('error', 'Usuario o contraseña incorrecto')
   }
 
-  return isLoggedIn === false ? (
+  return currentUser === null ? (
     <main className={s.main}>
       <div className={s.content}>
         <button className={s.github}>
@@ -40,14 +56,25 @@ const Login: NextPage = () => {
         </button>
 
         <form onSubmit={handleSubmit}>
-          <input type='email' name='email' aria-label='email' required />
+          <input type='email' name='email' aria-label='email' required placeholder='Correo' />
+          <input
+            type='password'
+            name='password'
+            aria-label='password'
+            required
+            placeholder='Contraseña'
+          />
 
-          <button>
+          <button className={s.email}>
             <MdEmail />
-            <span>Continuar con email</span>
+            <span>{MODE.text} con email</span>
           </button>
         </form>
       </div>
+
+      <footer>
+        <button onClick={() => setLoginMode(!loginMode)}>{MODE.sentence}</button>
+      </footer>
     </main>
   ) : (
     <Loader />

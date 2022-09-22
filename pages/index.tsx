@@ -1,24 +1,17 @@
 import type { GetServerSideProps, NextPage } from 'next'
-import { supabase } from 'utils/supabaseClient'
+import { supabase } from '@/src/utils/supabaseClient'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai'
-import s from '../styles/Index.module.scss'
+import s from '@/styles/Index.module.scss'
+import { TTeacher } from '@/src/types'
 
-export type Props = {
-  courses: [
-    {
-      title: string
-      name: string
-      banner: string
-      profiles: {
-        username: string
-      }
-    }
-  ]
+type IHomeProps = {
+  courses: { title: string; name: string; banner: string; teacher: TTeacher }[]
 }
-const Home: NextPage<Props> = ({ courses }) => {
+
+const Home: NextPage<IHomeProps> = ({ courses }) => {
   const [search, setSearch] = useState(/./)
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -27,21 +20,21 @@ const Home: NextPage<Props> = ({ courses }) => {
     setSearch(new RegExp(safeSearch, 'i'))
   }
 
-  const filteredCourses = courses.filter(course => search.test(course.name))
+  const filteredCourses = courses.filter(course => search.test(course.title))
 
   return (
     <>
       <section className={s.search}>
-        <form>
+        <form onSubmit={e => e.preventDefault()}>
           <AiOutlineSearch />
           <input aria-label='Bucador de cursos' type='search' onChange={handleChange} />
         </form>
       </section>
       <section className={s.courses}>
         {filteredCourses?.length ? (
-          <div>
-            {filteredCourses.map(({ name, title, banner, profiles }, i) => {
-              const { username } = profiles
+          <div data-testid='courses-section'>
+            {filteredCourses.map(({ name, title, banner, teacher }, i) => {
+              const { username } = teacher
 
               return (
                 <Link key={i} href={`/${username}/${name}`}>
@@ -74,15 +67,11 @@ const Home: NextPage<Props> = ({ courses }) => {
 export default Home
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  let courses
+  const { data, error } = await supabase
+    .from('courses')
+    .select('name, title, banner, teacher:profiles(username, avatar)')
 
-  try {
-    const res = await supabase.from('courses').select('name, title, banner, profiles(username)')
+  if (error) console.error(error)
 
-    courses = res.data
-  } catch (err) {
-    console.error(err)
-  }
-
-  return { props: { courses } }
+  return { props: { courses: data } }
 }

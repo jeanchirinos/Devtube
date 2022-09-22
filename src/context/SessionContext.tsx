@@ -1,20 +1,52 @@
-import { createContext, useState, useEffect } from 'react'
-import { supabase } from 'utils/supabaseClient'
+import { createContext, useState, useEffect, useContext, useRef } from 'react'
+import { supabase } from '@/src/utils/supabaseClient'
 
 type TContextComponent = {
   children: JSX.Element | JSX.Element[]
 }
 
+type TCurrentUser = undefined | null | { username: string }
+
 interface CtxProps {
-  isLoggedIn: null | boolean
+  currentUser: TCurrentUser
 }
 
-export const CtxSession = createContext<CtxProps>({} as CtxProps)
+export const CtxSession = createContext({} as CtxProps)
 
 export default function SessionContext({ children }: TContextComponent) {
-  const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null)
+  const [currentUser, setCurrentUser] = useState<TCurrentUser>(undefined)
 
-  useEffect(() => setIsLoggedIn(Boolean(supabase.auth.session())), [])
+  const effectRan = useRef(false)
 
-  return <CtxSession.Provider value={{ isLoggedIn }}>{children}</CtxSession.Provider>
+  useEffect(() => {
+    if (effectRan.current) return
+    effectRan.current = true
+
+    async function getUser() {
+      const currentUser = supabase.auth.user()
+
+      if (!currentUser) {
+        setCurrentUser(null)
+        return
+      }
+
+      const { data } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('id', currentUser.id)
+        .single()
+
+      setCurrentUser(data)
+    }
+
+    getUser()
+
+    supabase.auth.onAuthStateChange(() => {
+      getUser()
+    })
+  }, [])
+
+  return <CtxSession.Provider value={{ currentUser }}>{children}</CtxSession.Provider>
 }
+
+export const useSession = () => useContext(CtxSession)

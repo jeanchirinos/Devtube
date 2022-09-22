@@ -1,8 +1,9 @@
 {
   "files.exclude": {
     ".next": true,
+    ".swc": true,
     "node_modules": true,
-    ".eslintrc.json": false,
+    ".eslintrc.json": true,
     ".gitignore": true,
     ".prettierrc.json": true,
     "next-env.d.ts": true,
@@ -14,7 +15,11 @@
     "public": true,
     "pages/_document.tsx": true,
     "src/interfaces": true,
-    "src/utils": false,
+    "src/utils": true,
     ".env.local": true,
+    ".env.test.local": true,
+    "jest.config.js": true,
+    "jest.setup.js": true,
+    "types.d.ts": true,
   },
 }
