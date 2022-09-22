@@ -32,18 +32,20 @@ const User: NextPage<IUserPageProps> = props => {
 
   return (
     <main className={s.main}>
-      <section>
-        <article className={s.user}>
-          <Image
-            src={ownCourses[0].teacher.avatar}
-            alt='Avatar de usuario'
-            width={32}
-            height={32}
-          />
+      {ownCourses?.length > 0 && (
+        <section>
+          <article className={s.user}>
+            <Image
+              src={ownCourses[0]?.teacher.avatar}
+              alt='Avatar de usuario'
+              width={32}
+              height={32}
+            />
 
-          <p>{ownCourses[0].teacher.username}</p>
-        </article>
-      </section>
+            <p>{ownCourses[0].teacher.username}</p>
+          </article>
+        </section>
+      )}
 
       <section>
         <h2>Mis cursos</h2>
