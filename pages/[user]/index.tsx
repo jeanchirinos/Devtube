@@ -16,6 +16,12 @@ export interface TOwnCourse {
   lessonsCount: [{ count: number }]
 }
 
+export interface TSubscribedCourse {
+  id: string
+  checkedLessons: string[]
+  course: TOwnCourse
+}
+
 export interface IUserPageProps {
   ownCourses: TOwnCourse[]
 }
