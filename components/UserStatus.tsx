@@ -15,6 +15,9 @@ export default function UserStatus() {
     <>
       <div className={s.user}>
         <ThemeSwitcher />
+        <Link href={`/${currentUser.username}/home`}>
+          <a>Inicio</a>
+        </Link>
         <Link href='/crear'>
           <a>Crear</a>
         </Link>

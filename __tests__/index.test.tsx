@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import Home from '@/pages/index'
 import '@testing-library/jest-dom'
+import Home from '@/pages/index'
 
 const courses = [
   {
@@ -43,6 +43,16 @@ describe('Home', () => {
     renderedCourses.forEach((course, i) => {
       expect(course).toHaveTextContent(courses[i].title)
     })
+  })
+
+  it('no renderiza cursos', () => {
+    render(<Home courses={[]} />)
+
+    // const result = screen.getByTestId('no-results') // | link
+
+    // expect(result).toHaveTextContent('No hay resultados')
+    const result = screen.getByRole('heading')
+    expect(result).toHaveTextContent('No hay resultados')
   })
 
   it('filtra segundo curso', () => {

@@ -16,19 +16,12 @@ export interface TOwnCourse {
   lessonsCount: [{ count: number }]
 }
 
-export interface TSubscribedCourse {
-  id: string
-  checkedLessons: string[]
-  course: TOwnCourse
-}
-
 export interface IUserPageProps {
-  subscribedCourses: TSubscribedCourse[]
   ownCourses: TOwnCourse[]
 }
 
 const User: NextPage<IUserPageProps> = props => {
-  const { subscribedCourses, ownCourses } = props
+  const { ownCourses } = props
 
   return (
     <main className={s.main}>
@@ -55,14 +48,6 @@ const User: NextPage<IUserPageProps> = props => {
           ))}
         </div>
       </section>
-      <section>
-        <h2>Cursos inscritos</h2>
-        <div className={s.courses}>
-          {subscribedCourses.map(course => (
-            <CourseCard key={course.id} {...course} />
-          ))}
-        </div>
-      </section>
     </main>
   )
 }
@@ -72,29 +57,15 @@ export default User
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { user } = params!
 
-  const { data: subscribedCourses, error } = await supabase
-    .from('courses_profiles')
-    .select(
-      'id, profiles!inner(username), checkedLessons, course:courses!inner(name, title, banner, teacher:profiles!inner(username, avatar), lessonsCount: lessons!inner(count))'
-    )
-    .eq('profiles.username', user)
-    .eq('state', true)
-    .neq('course.teacher.username', user)
+  const { data: ownCourses, error: error } = await supabase
+    .from('courses')
+    .select('id,  name, title, banner, teacher:profiles!inner(username, avatar)')
+    .eq('teacher.username', user)
 
   if (error) {
     console.error(error)
     return { notFound: true }
   }
 
-  const { data: ownCourses, error: error2 } = await supabase
-    .from('courses')
-    .select('id,  name, title, banner, teacher:profiles!inner(username, avatar)')
-    .eq('teacher.username', user)
-
-  if (error2) {
-    console.error(error2)
-    return { notFound: true }
-  }
-
-  return { props: { subscribedCourses, ownCourses } }
+  return { props: { ownCourses } }
 }

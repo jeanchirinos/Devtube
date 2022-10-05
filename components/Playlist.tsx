@@ -13,10 +13,13 @@ export default function Playlist() {
 
   async function toggleVisibility(id: string) {
     // if (!supabase.auth.user() || !userWithCourse?.state) return
-    if (!supabase.auth.user() || !userWithCourse?.state) {
-      showToast('warning', 'Inscríbete al curso para seguir tu progreso')
-      return
-    }
+
+    if (!currentVideo?.id) return
+
+    // if (!supabase.auth.user() || !userWithCourse?.state) {
+    //   showToast('warning', 'Inscríbete al curso para seguir tu progreso')
+    //   return
+    // }
 
     if (checkedLessons.includes(id)) {
       const index = checkedLessons.indexOf(id)
@@ -38,7 +41,8 @@ export default function Playlist() {
   return (
     <div className='videos'>
       {lessons.map(({ order, title, duration, id }) => {
-        const className = checkedLessons?.includes(id) ? 'btn-done' : 'btn-undone'
+        let className = checkedLessons?.includes(id) ? 'btn-done' : 'btn-undone'
+        if (!currentVideo?.id) className += ' pointer-none'
 
         return (
           <picture key={order} className={isSelected(order)}>

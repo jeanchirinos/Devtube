@@ -4,6 +4,7 @@ import { TLesson, IUserWithCourse } from '@/src/types'
 import { supabase } from '@/src/utils/supabaseClient'
 import { ICourseProps } from '@/pages/[user]/[course]'
 import { useSession } from './SessionContext'
+import { showToast } from '../functions'
 
 interface IContextComponent extends ICourseProps {
   children: JSX.Element | JSX.Element[]
@@ -32,7 +33,10 @@ export default function CourseContext(props: IContextComponent) {
   const router = useRouter()
 
   function selectVideo(order: string) {
-    // if (!currentUser || !userWithCourse.state) return
+    if (!currentUser || !userWithCourse.state) {
+      showToast('warning', 'Inscríbete al curso para ver el video')
+      return
+    }
 
     const newVideo = lessons.find(l => l.order === order)
     setCurrentVideo(newVideo || ({} as TLesson))

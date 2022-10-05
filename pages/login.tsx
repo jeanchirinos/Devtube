@@ -55,7 +55,7 @@ const Login: NextPage = () => {
           <span>Continuar con Google</span>
         </button>
 
-        <form onSubmit={handleSubmit}>
+        <form role={'form'} onSubmit={handleSubmit}>
           <input type='email' name='email' aria-label='email' required placeholder='Correo' />
           <input
             type='password'
@@ -79,6 +79,8 @@ const Login: NextPage = () => {
   ) : (
     <Loader />
   )
+
+  // return <form role={'form'} action=''></form>
 }
 
 export default Login

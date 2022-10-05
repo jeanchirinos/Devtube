@@ -2,11 +2,11 @@ import Playlist from './Playlist'
 import s from './CoursePresentation.module.scss'
 import Image from 'next/image'
 import { useCourse } from '@/src/context/CourseContext'
-import { useSession } from '@/src/context/SessionContext'
+// import { useSession } from '@/src/context/SessionContext'
 import Link from 'next/link'
 
 export default function CoursePresentation() {
-  const { currentUser } = useSession()
+  // const { currentUser } = useSession()
   const { teacher, course, userWithCourse, toggleSubscription, currentVideo } = useCourse()
   const { avatar, username } = teacher
   const { banner, title, description } = course
@@ -42,11 +42,15 @@ export default function CoursePresentation() {
             </Link>
           </aside>
           <p className={s.description}>{description}</p>
-          {!(currentUser?.username === teacher.username) && (
+          {/* {!(currentUser?.username === teacher.username) && (
             <button className={subscriptionState.className} onClick={toggleSubscription}>
               {subscriptionState.text}
             </button>
-          )}
+          )} */}
+
+          <button className={subscriptionState.className} onClick={toggleSubscription}>
+            {subscriptionState.text}
+          </button>
         </div>
       </section>
       <Playlist />

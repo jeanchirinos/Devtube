@@ -8,7 +8,7 @@
     ".prettierrc.json": true,
     "next-env.d.ts": true,
     "next.config.js": true,
-    "package.json": true,
+    "package.json": false,
     "yarn.lock": true,
     "README.md": true,
     "tsconfig.json": true,
