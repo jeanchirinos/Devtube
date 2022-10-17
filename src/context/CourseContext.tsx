@@ -21,7 +21,7 @@ interface ICtxProps extends ICourseProps {
 export const CtxCourse = createContext({} as ICtxProps)
 
 export default function CourseContext(props: IContextComponent) {
-  const { children, course, teacher, lessons } = props
+  const { children, course, teacher, lessons, reviews } = props
 
   const [userWithCourse, setUserWithCourse] = useState({} as IUserWithCourse)
   const [currentVideo, setCurrentVideo] = useState({} as TLesson)
@@ -98,6 +98,7 @@ export default function CourseContext(props: IContextComponent) {
         course,
         teacher,
         lessons,
+        reviews,
         userWithCourse,
         setUserWithCourse,
         currentVideo,

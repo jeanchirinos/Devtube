@@ -10,6 +10,15 @@ export interface ICourseProps {
   course: TCourse
   teacher: TTeacher
   lessons: TLesson[]
+  reviews: {
+    id: number
+    stars: number
+    comment: string
+    user: {
+      username: string
+      avatar: string
+    }
+  }[]
 }
 
 const Course: NextPage<ICourseProps> = props => {
@@ -34,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<ICourseProps, Params> = asyn
   const { data: supabaseData, error } = await supabase
     .from('courses')
     .select(
-      'id, name, title, banner, description, teacher:profiles!inner(username, avatar), lessons!inner(id, identifier, order)'
+      'id, name, title, banner, description, teacher:profiles!inner(username, avatar), lessons!inner(id, identifier, order), reviews:courses_profiles!inner(id, stars, comment, user:profiles!inner(username, avatar)) '
     )
     .eq('profiles.username', userParam)
     .eq('name', courseParam)
@@ -50,6 +59,7 @@ export const getServerSideProps: GetServerSideProps<ICourseProps, Params> = asyn
 
   const courseData = supabaseData as ICourseProps
   courseData.course = { id, name, title, banner, description }
+  // courseData.reviews = { ...reviews }
 
   const videosIds = courseData.lessons.map(v => v.identifier).join('&id=')
 

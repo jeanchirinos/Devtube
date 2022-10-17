@@ -5,7 +5,7 @@ import { supabase } from '@/src/utils/supabaseClient'
 import s from '@/styles/User.module.scss'
 
 export interface TOwnCourse {
-  id: string
+  id: number
   name: string
   title: string
   banner: string
@@ -20,6 +20,8 @@ export interface TSubscribedCourse {
   id: string
   checkedLessons: string[]
   course: TOwnCourse
+  stars: number
+  comment: string
 }
 
 export interface IUserPageProps {

@@ -1,15 +1,15 @@
 import CourseCard from '@/components/CourseCard'
 import { GetServerSideProps, NextPage } from 'next'
-import Image from 'next/image'
 import { supabase } from '@/src/utils/supabaseClient'
 import s from '@/styles/User.module.scss'
 import { useSession } from '@/src/context/SessionContext'
 import { useRouter } from 'next/router'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import Loader from '@/components/Loader'
+import CourseCardReview from '@/components/CourseCardReview'
 
 export interface TOwnCourse {
-  id: string
+  id: number
   name: string
   title: string
   banner: string
@@ -24,6 +24,8 @@ export interface TSubscribedCourse {
   id: string
   checkedLessons: string[]
   course: TOwnCourse
+  stars: number
+  comment: string
 }
 
 export interface IUserPageProps {
@@ -42,8 +44,6 @@ const Home: NextPage<IUserPageProps> = props => {
     if (currentUser === undefined) return
     if (currentUser === null) router.push('/login')
 
-    console.log(currentUser)
-
     if (currentUser?.username !== router.query.user) {
       router.push(`/`)
     } else {
@@ -51,16 +51,36 @@ const Home: NextPage<IUserPageProps> = props => {
     }
   }, [currentUser])
 
+  const completed = (c: TSubscribedCourse) =>
+    c.checkedLessons.length === c.course.lessonsCount[0].count
+
   return isLoading ? (
     <Loader />
   ) : (
     <main className={s.main}>
       <section>
-        <h2>Cursos inscritos</h2>
-        <div className={s.courses}>
+        <h2>En curso</h2>
+        {/* <div className={s.courses}>
           {subscribedCourses.map(course => (
             <CourseCard key={course.id} {...course} />
           ))}
+        </div> */}
+        <div className={s.courses_home}>
+          {subscribedCourses
+            .filter(c => !completed(c))
+            .map(course => (
+              <CourseCard key={course.id} {...course} />
+            ))}
+        </div>
+      </section>
+      <section>
+        <h2>Completado</h2>
+        <div className={s.courses_home}>
+          {subscribedCourses
+            .filter(c => completed(c))
+            .map(course => (
+              <CourseCardReview key={course.id} {...course} />
+            ))}
         </div>
       </section>
     </main>
@@ -88,7 +108,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { data: subscribedCourses, error } = await supabase
     .from('courses_profiles')
     .select(
-      'id, profiles!inner(username), checkedLessons, course:courses!inner(name, title, banner, teacher:profiles!inner(username, avatar), lessonsCount: lessons!inner(count))'
+      'id, profiles!inner(username), checkedLessons, stars, comment, course:courses!inner(name, title, banner, teacher:profiles!inner(username, avatar), lessonsCount: lessons!inner(count))'
     )
     .eq('profiles.username', user)
     .eq('state', true)

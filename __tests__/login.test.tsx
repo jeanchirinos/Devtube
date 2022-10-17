@@ -1,9 +1,7 @@
-import Loader from '@/components/Loader'
 import Login from '@/pages/login'
 import { CtxSession } from '@/src/context/SessionContext'
 import '@testing-library/jest-dom'
-import { render, screen, renderHook } from '@testing-library/react'
-import { useContext } from 'react'
+import { render, screen } from '@testing-library/react'
 
 export {}
 
