@@ -4,7 +4,7 @@
     ".swc": true,
     "node_modules": true,
     ".eslintrc.json": true,
-    ".gitignore": true,
+    ".gitignore": false,
     ".prettierrc.json": true,
     "next-env.d.ts": true,
     "next.config.js": true,
