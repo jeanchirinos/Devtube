@@ -13,7 +13,7 @@ type IHomeProps = {
     name: string
     banner: string
     teacher: TTeacher
-    courses_profiles: [{ stars: number }]
+    courses_profiles: { stars: number }[]
   }[]
 }
 
