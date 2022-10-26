@@ -12,6 +12,26 @@ const courses = [
       avatar: '/img/defaultAvatar.png'
     },
     courses_profiles: [{ stars: 5 }]
+  },
+  {
+    title: 'HTML',
+    name: 'my_test_name_2',
+    banner: '/img/defaultBanner.webp',
+    teacher: {
+      username: 'test_teacher_2',
+      avatar: '/img/defaultAvatar.png'
+    },
+    courses_profiles: [{ stars: 4 }]
+  },
+  {
+    title: 'SCSS',
+    name: 'my_test_name_3',
+    banner: '/img/defaultBanner.webp',
+    teacher: {
+      username: 'test_teacher_3',
+      avatar: '/img/defaultAvatar.png'
+    },
+    courses_profiles: [{ stars: 3 }]
   }
 ]
 
