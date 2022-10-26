@@ -3,7 +3,7 @@
     ".next": true,
     ".swc": true,
     "node_modules": true,
-    ".eslintrc.json": true,
+    ".eslintrc.json": false,
     ".gitignore": false,
     ".prettierrc.json": true,
     "next-env.d.ts": true,
